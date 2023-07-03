@@ -122,7 +122,7 @@ class CipherViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    getLoginCipher();
+    // getLoginCipher();
   }
   @override
   void onClose() {
@@ -226,14 +226,14 @@ class CipherViewModel extends GetxController {
     showCipherAtMenu.value = !showCipherAtMenu.value;
   }
 
-  void turnOffCipherLogin() {
+  void turnOffCipherLogin() {print(loginWithCipher.value);
     btnPressedSound();
     var box = Hive.box(loginBoxName);
     var cipher = box.put('isCipherActive', false);
     loginWithCipher.value = false;
   }
 
-  void turnOnCipherLogin() {
+  void turnOnCipherLogin() {print(loginWithCipher.value);
     btnPressedSound();
     String cipher = loginEditingController2.value.text;
     if (cipher.isNotEmpty && cipher.length == 4) {
