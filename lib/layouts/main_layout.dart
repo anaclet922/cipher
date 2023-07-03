@@ -1,3 +1,5 @@
+
+
 import 'package:cipher_saver/cipher_model_view.dart';
 import 'package:cipher_saver/constants/colors.dart';
 import 'package:flutter/material.dart';
@@ -10,18 +12,20 @@ class MainLayout extends StatelessWidget {
 
   final viewModel = Get.put(CipherViewModel());
 
+  String currentRoute = '/';
 
   @override
   Widget build(BuildContext context) {
+    currentRoute = ModalRoute.of(context)!.settings.name.toString() == '/new-cipher' ? 'assets/greybackground.png' :'assets/background.png';
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
             height: double.infinity,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/background.png'),
+                    image: AssetImage(currentRoute),
                     fit: BoxFit.fill)),
             child: Column(
               children: [
@@ -69,6 +73,7 @@ class MainLayout extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: (){
                                       viewModel.changeMenu(ActiveMenu.isMenuActive);
+                                      viewModel.btnPressedSound();
                                     },
                                     child: Obx(() =>
                                       Text(
@@ -99,6 +104,7 @@ class MainLayout extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: (){
                                       viewModel.changeMenu(ActiveMenu.isMyCiphersActive);
+                                      viewModel.btnPressedSound();
                                     },
                                     child: Obx(() =>
                                       Text(
@@ -133,6 +139,7 @@ class MainLayout extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: (){
                                       viewModel.changeMenu(ActiveMenu.isMyPasswordActive);
+                                      viewModel.btnPressedSound();
                                     },
                                     child: Obx(() =>
                                       Text(
@@ -163,6 +170,7 @@ class MainLayout extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: (){
                                       viewModel.changeMenu(ActiveMenu.isMyKeywordsActive);
+                                      viewModel.btnPressedSound();
                                     },
                                     child: Obx(() =>
                                       Text(
@@ -191,6 +199,7 @@ class MainLayout extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: (){
                                       viewModel.changeMenu(ActiveMenu.isGeneratorActive);
+                                      viewModel.btnPressedSound();
                                     },
                                     child: Obx(() =>
                                       Text(

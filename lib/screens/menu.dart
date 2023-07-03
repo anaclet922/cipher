@@ -1,7 +1,9 @@
 import 'package:cipher_saver/cipher_model_view.dart';
 import 'package:cipher_saver/constants/colors.dart';
+import 'package:cipher_saver/constants/variables.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Menu extends StatelessWidget {
@@ -14,6 +16,9 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -59,8 +64,9 @@ class Menu extends StatelessWidget {
                     child: Obx(
                           () => PinCodeTextField(
                         length: 4,
-                        obscureText: true,
-                        obscuringWidget: const Icon(Icons.star),
+                        obscureText: !viewModel.showCipherAtMenu.value,
+                        keyboardType: TextInputType.number,
+                        // obscuringWidget: const Icon(Icons.star),
                         animationType: AnimationType.fade,
                         pinTheme: PinTheme(
                             shape: PinCodeFieldShape.box,
@@ -82,11 +88,11 @@ class Menu extends StatelessWidget {
                         errorAnimationController: viewModel.errorController2.value,
                         controller: viewModel.loginEditingController2.value,
                         onCompleted: (v) {
-                          print("Completed");
+
                         },
                         onChanged: (value) {},
                         beforeTextPaste: (text) {
-                          print("Allowing to paste $text");
+                          // print("Allowing to paste $text");
                           //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                           //but you can show anything you want here, like your pop up saying wrong paste format or etc
                           return true;
@@ -101,35 +107,37 @@ class Menu extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              // viewModel.login();
+              viewModel.turnOnCipherLogin();
             },
-            child: Container(
-              width: 184.93,
-              height: 58,
-              margin: const EdgeInsets.only(top: 80),
-              decoration: ShapeDecoration(
-                color: yellow,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.38),
+            child: Obx(() =>
+              Container(
+                width: 184.93,
+                height: 58,
+                margin: const EdgeInsets.only(top: 30),
+                decoration: ShapeDecoration(
+                  color: viewModel.loginWithCipher.value ? shadowYellow : yellow,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24.38),
+                  ),
+                  shadows:  [
+                    BoxShadow(
+                      color: viewModel.loginWithCipher.value ? yellow : shadowYellow,
+                      blurRadius: 0,
+                      offset: const Offset(0, 5.04),
+                      spreadRadius: 0,
+                    )
+                  ],
                 ),
-                shadows: const [
-                  BoxShadow(
-                    color: shadowYellow,
-                    blurRadius: 0,
-                    offset: Offset(0, 5.04),
-                    spreadRadius: 0,
-                  )
-                ],
-              ),
-              child: const Center(
-                child: Text(
-                  'ON',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF515151),
-                    fontSize: 33.62,
-                    fontFamily: 'BauhausHeavy',
-                    fontWeight: FontWeight.w500,
+                child: const Center(
+                  child: Text(
+                    'ON',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF515151),
+                      fontSize: 33.62,
+                      fontFamily: 'BauhausHeavy',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
@@ -137,35 +145,37 @@ class Menu extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              // viewModel.login();
+              viewModel.turnOffCipherLogin();
             },
-            child: Container(
-              width: 184.93,
-              height: 58,
-              margin: const EdgeInsets.only(top: 20),
-              decoration: ShapeDecoration(
-                color: yellow,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.38),
+            child: Obx(() =>
+              Container(
+                width: 184.93,
+                height: 58,
+                margin: const EdgeInsets.only(top: 20),
+                decoration: ShapeDecoration(
+                  color: !viewModel.loginWithCipher.value ? shadowYellow : yellow,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24.38),
+                  ),
+                  shadows:  [
+                    BoxShadow(
+                      color:  !viewModel.loginWithCipher.value ? yellow : shadowYellow,
+                      blurRadius: 0,
+                      offset: const Offset(0, 5.04),
+                      spreadRadius: 0,
+                    )
+                  ],
                 ),
-                shadows: const [
-                  BoxShadow(
-                    color: shadowYellow,
-                    blurRadius: 0,
-                    offset: Offset(0, 5.04),
-                    spreadRadius: 0,
-                  )
-                ],
-              ),
-              child: const Center(
-                child: Text(
-                  'OFF',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF515151),
-                    fontSize: 33.62,
-                    fontFamily: 'BauhausHeavy',
-                    fontWeight: FontWeight.w500,
+                child: const Center(
+                  child: Text(
+                    'OFF',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF515151),
+                      fontSize: 33.62,
+                      fontFamily: 'BauhausHeavy',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
@@ -173,7 +183,7 @@ class Menu extends StatelessWidget {
           ),
 
           Padding(
-            padding: const EdgeInsets.fromLTRB(40, 40, 80, 40),
+            padding: const EdgeInsets.fromLTRB(40, 40, 40, 40),
             child: Stack(
                 children: [
                   Text(

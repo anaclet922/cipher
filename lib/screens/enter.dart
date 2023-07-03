@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:cipher_saver/constants/variables.dart';
 import 'package:cipher_saver/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class EnterIndex extends StatefulWidget {
   const EnterIndex({Key? key}) : super(key: key);
@@ -14,12 +18,26 @@ class _EnterIndexState extends State<EnterIndex> with TickerProviderStateMixin {
 
   late AnimationController _animationController;
 
+  bool isCipherActive = false;
+
   @override
   void initState() {
     initAnimationController();
+    var box = Hive.box(loginBoxName);
+    var cipher = box.get('isCipherActive');
+
+    if(cipher != null){
+      isCipherActive = cipher;
+    }
+
     Timer(const Duration(seconds: 3), () {
       _animationController.stop();
-      Navigator.pushReplacementNamed(context, '/enter-cipher');
+      if(isCipherActive){
+        Get.toNamed('/enter-cipher');
+      }else{
+        Get.toNamed('/menu');
+      }
+      // Navigator.pushReplacementNamed(context, '/enter-cipher');
     });
     super.initState();
   }

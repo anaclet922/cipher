@@ -61,9 +61,10 @@ class EnterCipher extends StatelessWidget {
               child: Obx(
                 () => PinCodeTextField(
                   length: 4,
-                  obscureText: true,
+                  obscureText:  viewModel.showCipherAtMenu.value,
                   obscuringWidget: const Icon(Icons.star),
                   animationType: AnimationType.fade,
+                  keyboardType: TextInputType.number,
                   pinTheme: PinTheme(
                       shape: PinCodeFieldShape.box,
                       borderRadius: BorderRadius.circular(0),
@@ -84,11 +85,11 @@ class EnterCipher extends StatelessWidget {
                   errorAnimationController: viewModel.errorController.value,
                   controller: viewModel.loginEditingController.value,
                   onCompleted: (v) {
-                    print("Completed");
+                    // print("Completed");
                   },
                   onChanged: (value) {},
                   beforeTextPaste: (text) {
-                    print("Allowing to paste $text");
+                    // print("Allowing to paste $text");
                     //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                     //but you can show anything you want here, like your pop up saying wrong paste format or etc
                     return true;
